@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — chigitn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f0eb;
+      --cream: #e8e0d5;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --muted: #8a8070;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--gold);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.5);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: transform 0.35s cubic-bezier(.2,.8,.2,1), width 0.3s, height 0.3s, opacity 0.3s;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(80px, 11vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero-name span {
+      display: block;
+      color: var(--gold);
+    }
+
+    .hero-tagline {
+      margin-top: 32px;
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 340px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-stat-row {
+      display: flex;
+      gap: 40px;
+      margin-top: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+
+    .hero-stat .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat .label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--black) 0%, transparent 50%);
+      z-index: 1;
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(120px, 20vw, 280px);
+      color: rgba(201,168,76,0.04);
+      right: -20px;
+      top: 50%;
+      transform: translateY(-50%) rotate(90deg);
+      white-space: nowrap;
+      user-select: none;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .hero-accent {
+      position: absolute;
+      bottom: 60px;
+      right: 48px;
+      z-index: 2;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 18px;
+      color: var(--gold-light);
+      opacity: 0;
+      animation: fadeUp 0.8s 1s forwards;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.3;
+      margin: 0;
+    }
+
+    /* ── STORY SECTION ── */
+    .story {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .story-label {
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding-top: 8px;
+    }
+
+    .story-body h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1;
+      margin-bottom: 32px;
+      letter-spacing: 0.02em;
+    }
+
+    .story-body h2 em {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 0.85em;
+    }
+
+    .story-body p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: #b8b0a5;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    .story-body p strong {
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    /* ── METHODS GRID ── */
+    .methods-section {
+      padding: 80px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .section-header h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 4vw, 52px);
+      letter-spacing: 0.03em;
+    }
+
+    .section-header span {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .methods-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .method-card {
+      background: #111;
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+
+    .method-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0;
+      background: var(--gold);
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+
+    .method-card:hover { background: #161410; }
+    .method-card:hover::before { width: 100%; }
+
+    .method-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      color: rgba(201,168,76,0.12);
+      line-height: 1;
+      margin-bottom: 16px;
+      transition: color 0.3s;
+    }
+
+    .method-card:hover .method-num { color: rgba(201,168,76,0.25); }
+
+    .method-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .method-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* ── BEFORE / AFTER ── */
+    .glow-up-section {
+      background: #0d0c0a;
+      padding: 100px 48px;
+      text-align: center;
+    }
+
+    .glow-up-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 7vw, 96px);
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .glow-up-section h2 span { color: var(--gold); }
+
+    .glow-up-section .sub {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 72px;
+    }
+
+    .timeline {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 0;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 80px; right: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.3;
+    }
+
+    .timeline-item {
+      flex: 1;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    .timeline-dot {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 20px;
+      background: var(--black);
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .timeline-item:hover .timeline-dot {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+    }
+
+    .timeline-item .t-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .timeline-item .t-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer-links a {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.15);
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { display: none; }
+      .hero-left { padding: 80px 24px 60px; }
+      .story { grid-template-columns: 1fr; padding: 60px 24px; }
+      .story-label { margin-bottom: 24px; }
+      .methods-grid { grid-template-columns: 1fr; }
+      .methods-section { padding: 60px 24px; }
+      .glow-up-section { padding: 60px 24px; }
+      .timeline { flex-direction: column; gap: 40px; }
+      .timeline::before { display: none; }
+      .footer { flex-direction: column; gap: 24px; text-align: center; padding: 40px 24px; }
+      .footer-links { flex-wrap: wrap; justify-content: center; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">TikTok · Looksmaxxing · Ascension Guide</p>
+      <h1 class="hero-name">
+        Chi<span>gltn</span>
+      </h1>
+      <p class="hero-tagline">
+        Real methods. Real results. No fluff — just the exact moves I used to glow up and transform the way the world sees me.
+      </p>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="num">100%</div>
+          <div class="label">Real Methods</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">0</div>
+          <div class="label">Filters Used</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">∞</div>
+          <div class="label">Potential</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-grid-lines"></div>
+      <div class="hero-bg-text">ASCEND</div>
+      <p class="hero-accent">"the glow up is a process."</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- STORY -->
+  <section class="story">
+    <div class="story-label reveal">My Story</div>
+    <div class="story-body">
+      <h2 class="reveal">From Average to <em>Ascending.</em></h2>
+      <p class="reveal">I used to walk into a room and feel invisible. Not because I was — but because I hadn't yet learned how to carry myself, how to present myself, or how to unlock the version of me that was already there.</p>
+      <p class="reveal">That changed when I started taking <strong>looksmaxxing seriously.</strong> Not in an obsessive way — but in the same way an athlete trains. Deliberately. Consistently. With intention.</p>
+      <p class="reveal">On <strong>@chigitn</strong>, I document the exact methods I used: skincare, grooming, fitness, posture, style, and mindset. Everything I wish someone had told me earlier. No gatekeeping. All signal, no noise.</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- METHODS -->
+  <section class="methods-section">
+    <div class="section-header reveal">
+      <h2>The Methods</h2>
+      <span>What I actually used</span>
+    </div>
+    <div class="methods-grid">
+      <div class="method-card reveal">
+        <div class="method-num">01</div>
+        <div class="method-title">Skincare & Skin Health</div>
+        <div class="method-desc">Routine building, product selection, diet-skin connection, and fixing the basics most guys skip.</div>
+      </div>
+      <div class="method-card reveal">
+        <div class="method-num">02</div>
+        <div class="method-title">Grooming & Hair</div>
+        <div class="method-desc">Finding your face shape, the right cut, eyebrow grooming, beard shaping — all of it matters more than you think.</div>
+      </div>
+      <div class="method-card reveal">
+        <div class="method-num">03</div>
+        <div class="method-title">Fitness & Body</div>
+        <div class="method-desc">How training changes your facial structure, posture, and the way clothes fit. The gym is the ultimate looksmax.</div>
+      </div>
+      <div class="method-card reveal">
+        <div class="method-num">04</div>
+        <div class="method-title">Style & Presentation</div>
+        <div class="method-desc">Building a wardrobe that fits, suits your vibe, and makes you look like you've got your life together.</div>
+      </div>
+      <div class="method-card reveal">
+        <div class="method-num">05</div>
+        <div class="method-title">Posture & Presence</div>
+        <div class="method-desc">How you carry yourself communicates everything. Mewing, posture work, and moving with intent.</div>
+      </div>
+      <div class="method-card reveal">
+        <div class="method-num">06</div>
+        <div class="method-title">Mindset & Identity</div>
+        <div class="method-desc">The glow up starts internally. Self-belief, discipline, and seeing yourself as the person you're becoming.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- GLOW UP TIMELINE -->
+  <section class="glow-up-section">
+    <h2 class="reveal">The <span>Ascension</span> Arc</h2>
+    <p class="sub reveal">Every glow up has stages</p>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">😐</div>
+        <div class="t-label">Rock Bottom</div>
+        <div class="t-desc">Ignoring the basics. No routine. No intention.</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">📖</div>
+        <div class="t-label">Awareness</div>
+        <div class="t-desc">Realising potential exists. Starting to research.</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">🔧</div>
+        <div class="t-label">Building</div>
+        <div class="t-desc">Skincare. Gym. Grooming. Wardrobe. One at a time.</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">📈</div>
+        <div class="t-label">Compound</div>
+        <div class="t-desc">The methods stack. Results become visible. Confidence follows.</div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">✦</div>
+        <div class="t-label">Ascended</div>
+        <div class="t-desc">Not a destination — a standard. Maintained daily.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">chigitn</div>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Guide</a>
+      <a href="#">About</a>
+      <a href="https://www.tiktok.com/@chigitn?is_from_webapp=1&sender_device=pc" target="_blank">TikTok ↗</a>
+    </div>
+    <div class="footer-copy">© 2025 chigitn · All rights reserved</div>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+    });
+
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    document.querySelectorAll('a, button, .method-card').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width = '60px'; ring.style.height = '60px';
+        ring.style.opacity = '0.6';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width = '36px'; ring.style.height = '36px';
+        ring.style.opacity = '1';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => obs.observe(r));
+  </script>
+</body>
+</html>
